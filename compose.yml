@@ -3,6 +3,8 @@ services:
     build: ./docker/rust
     container_name: runner
     command: cargo watch -x run
+    ports:
+      - 80:8080
     volumes:
       - ./src:/workspace/src
       - ./tests:/workspace/tests
