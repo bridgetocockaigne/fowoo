@@ -1,0 +1,22 @@
+services:
+  runner:
+    build: ./docker/rust
+    container_name: runner
+    command: cargo watch -x run
+    volumes:
+      - ./src:/workspace/src
+      - ./tests:/workspace/tests
+      - ./Cargo.toml:/workspace/Cargo.toml
+      - ./Cargo.lock:/workspace/Cargo.lock
+  tester:
+    build: ./docker/rust
+    container_name: tester
+    command: cargo watch -x test
+    volumes:
+      - ./src:/workspace/src
+      - ./tests:/workspace/tests
+      - ./Cargo.toml:/workspace/Cargo.toml
+      - ./Cargo.lock:/workspace/Cargo.lock
+
+volumes:
+  build-cache:
