@@ -8,6 +8,7 @@ services:
     volumes:
       - ./src:/workspace/src
       - ./tests:/workspace/tests
+      - ./templates:/workspace/templates
       - ./Cargo.toml:/workspace/Cargo.toml
       - ./Cargo.lock:/workspace/Cargo.lock
   tester:
@@ -17,6 +18,7 @@ services:
     volumes:
       - ./src:/workspace/src
       - ./tests:/workspace/tests
+      - ./templates:/workspace/templates
       - ./Cargo.toml:/workspace/Cargo.toml
       - ./Cargo.lock:/workspace/Cargo.lock
 
