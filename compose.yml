@@ -9,6 +9,7 @@ services:
       - ./src:/workspace/src
       - ./tests:/workspace/tests
       - ./templates:/workspace/templates
+      - ./statics:/workspace/statics
       - ./Cargo.toml:/workspace/Cargo.toml
       - ./Cargo.lock:/workspace/Cargo.lock
   tester:
@@ -19,6 +20,7 @@ services:
       - ./src:/workspace/src
       - ./tests:/workspace/tests
       - ./templates:/workspace/templates
+      - ./statics:/workspace/statics
       - ./Cargo.toml:/workspace/Cargo.toml
       - ./Cargo.lock:/workspace/Cargo.lock
 
