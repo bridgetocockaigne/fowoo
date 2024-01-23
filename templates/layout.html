@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title></title>
+    <title>Fowoo :: {% block title %}Home{% endblock title %}</title>
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
     <link rel="stylesheet" href="/statics/css/fowoo.css">
     <link rel="apple-touch-icon" sizes="180x180" href="/statics/favicon/apple-touch-icon.png">
@@ -13,7 +13,17 @@
 </head>
 
 <body>
-    <h1>Hello, Html!</h1>
+    <div class="layout">
+        <header>
+            {% block header %}
+            {% if user %}{% else %}<a href="/login">Login</a>{% endif %}
+            {% endblock header %}
+        </header>
+        <div class="content">
+            {% block body %}
+            {% endblock body %}
+        </div>
+    </div>
 </body>
 
 </html>
