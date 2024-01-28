@@ -1,7 +1,7 @@
 use std::env;
 
 use axum::{routing::get, Router};
-use controller::{home, login};
+use controller::{auth, home, login};
 use infra::state::State;
 use tower_http::services::ServeDir;
 
@@ -24,6 +24,8 @@ async fn main() {
     let app = Router::new()
         .route("/", get(home::index))
         .route("/login", get(login::index))
+        .route("/login/google", get(login::google))
+        .route("/auth/google", get(auth::google))
         .with_state(state)
         .nest_service("/statics", serve_dir);
 
