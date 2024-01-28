@@ -12,6 +12,9 @@ services:
       - ./statics:/workspace/statics
       - ./Cargo.toml:/workspace/Cargo.toml
       - ./Cargo.lock:/workspace/Cargo.lock
+    env_file:
+      - ./default.env
+      - ./local.env
   tester:
     build: ./docker/rust
     container_name: tester
@@ -23,6 +26,9 @@ services:
       - ./statics:/workspace/statics
       - ./Cargo.toml:/workspace/Cargo.toml
       - ./Cargo.lock:/workspace/Cargo.lock
+    env_file:
+      - ./default.env
+      - ./local.env
 
 volumes:
   build-cache:
