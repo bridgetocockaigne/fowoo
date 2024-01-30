@@ -12,6 +12,7 @@ services:
       - ./statics:/workspace/statics
       - ./Cargo.toml:/workspace/Cargo.toml
       - ./Cargo.lock:/workspace/Cargo.lock
+      - build-cache:/workspace/target
     env_file:
       - ./default.env
       - ./local.env
@@ -26,6 +27,7 @@ services:
       - ./statics:/workspace/statics
       - ./Cargo.toml:/workspace/Cargo.toml
       - ./Cargo.lock:/workspace/Cargo.lock
+      - build-cache:/workspace/target
     env_file:
       - ./default.env
       - ./local.env
