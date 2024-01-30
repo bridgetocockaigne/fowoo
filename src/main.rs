@@ -1,8 +1,9 @@
+#![allow(dead_code)]
 use std::env;
 
 use axum::{routing::get, Router};
 use controller::{auth, home, login};
-use infra::state::State;
+use infra::{auth::google::Client, state::State};
 use tower_http::services::ServeDir;
 
 mod controller;
@@ -24,8 +25,14 @@ async fn main() {
     let app = Router::new()
         .route("/", get(home::index))
         .route("/login", get(login::index))
-        .route("/login/google", get(login::google))
-        .route("/auth/google", get(auth::google))
+        .route(
+            "/login/google",
+            get::<_, (_, axum::extract::State<Client>), _>(login::google),
+        )
+        .route(
+            "/auth/google",
+            get::<_, (_, axum::extract::State<Client>, _), _>(auth::google),
+        )
         .with_state(state)
         .nest_service("/statics", serve_dir);
 

@@ -1,7 +1,7 @@
 use axum::extract::FromRef;
 use tera::Tera;
 
-use super::auth::google;
+use super::auth::{google, Client};
 
 #[derive(Clone)]
 pub(crate) struct State {
