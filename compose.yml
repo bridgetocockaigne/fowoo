@@ -16,6 +16,8 @@ services:
     env_file:
       - ./default.env
       - ./local.env
+    depends_on:
+      - database
   tester:
     build: ./docker/rust
     container_name: tester
@@ -31,6 +33,17 @@ services:
     env_file:
       - ./default.env
       - ./local.env
+    depends_on:
+      - database
+  database:
+    image: postgres:alpine
+    container_name: database
+    volumes:
+      - database:/workspace/database/volume
+    env_file:
+      - ./default.env
+      - ./local.env
 
 volumes:
   build-cache:
+  database:
