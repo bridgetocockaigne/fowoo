@@ -10,6 +10,8 @@ services:
       - ./tests:/workspace/tests
       - ./templates:/workspace/templates
       - ./statics:/workspace/statics
+      - ./migrations:/workspace/migrations
+      - ./queries:/workspace/queries
       - ./Cargo.toml:/workspace/Cargo.toml
       - ./Cargo.lock:/workspace/Cargo.lock
       - build-cache:/workspace/target
@@ -27,8 +29,10 @@ services:
       - ./tests:/workspace/tests
       - ./templates:/workspace/templates
       - ./statics:/workspace/statics
+      - ./migrations:/workspace/migrations
       - ./Cargo.toml:/workspace/Cargo.toml
       - ./Cargo.lock:/workspace/Cargo.lock
+      - ./queries:/workspace/queries
       - build-cache:/workspace/target
     env_file:
       - ./default.env
