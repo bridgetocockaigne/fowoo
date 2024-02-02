@@ -3,16 +3,26 @@ use std::env;
 use axum::{routing::get, Router};
 use controller::{auth, home, login};
 use infra::{auth::google::Client, state::State};
-use sqlx::migrate::Migrator;
+use sqlx::{migrate::Migrator, postgres::PgPoolOptions};
 use tower_http::services::ServeDir;
 
 mod controller;
 mod infra;
 
-static _MIGRATOR: Migrator = sqlx::migrate!();
+static MIGRATOR: Migrator = sqlx::migrate!();
 
 #[tokio::main]
 async fn main() {
+    let database_url = env::var("DATABASE_URL").unwrap();
+
+    let db = PgPoolOptions::new()
+        .max_connections(20)
+        .connect(&database_url)
+        .await
+        .unwrap();
+
+    MIGRATOR.run(&db).await.unwrap();
+
     let template_dir_path =
         env::var("FOWOO_TEMPLATE_DIR_PATH").unwrap_or("/workspace/templates/**/*.html".to_string());
 
