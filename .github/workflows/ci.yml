@@ -41,5 +41,7 @@ jobs:
       -
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-
+      -
+        name: Run migrations
+        run: docker run --rm -v "./migrations:/workspace/migrations" ghcr.io/bridgetocockaigne/fowoo/migrations:latest sqlx migrate run
 
