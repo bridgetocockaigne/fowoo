@@ -1,8 +1,10 @@
-name: Cargo Build & Test
+name: Build migrations container
 
 on:
   push:
+    paths: "**/sqlx-cli/Dockerfile"
   pull_request:
+    paths: "**/sqlx-cli/Dockerfile"
 
 env:
   CARGO_TERM_COLOR: always
@@ -27,3 +29,11 @@ jobs:
       -
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+      -
+        name: Build and push migrations
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./docker/sqlx-cli/Dockerfile
+          push: true
+          tags: ghcr.io/${{ github.repository }}/migrations:latest
