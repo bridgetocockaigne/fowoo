@@ -10,7 +10,6 @@ services:
       - ./tests:/workspace/tests
       - ./templates:/workspace/templates
       - ./statics:/workspace/statics
-      - ./migrations:/workspace/migrations
       - ./queries:/workspace/queries
       - ./Cargo.toml:/workspace/Cargo.toml
       - ./Cargo.lock:/workspace/Cargo.lock
@@ -20,6 +19,8 @@ services:
       - ./local.env
     depends_on:
       - database
+      - migrations
+
   tester:
     build: ./docker/rust
     container_name: tester
@@ -29,7 +30,6 @@ services:
       - ./tests:/workspace/tests
       - ./templates:/workspace/templates
       - ./statics:/workspace/statics
-      - ./migrations:/workspace/migrations
       - ./Cargo.toml:/workspace/Cargo.toml
       - ./Cargo.lock:/workspace/Cargo.lock
       - ./queries:/workspace/queries
@@ -39,6 +39,24 @@ services:
       - ./local.env
     depends_on:
       - database
+      - migrations
+
+  migrations:
+    build: ./docker/sqlx-cli
+    container_name: migrations
+    command: sqlx migrate run
+    volumes:
+      - ./migrations:/workspace/migrations
+    depends_on:
+      - database
+    develop:
+      watch:
+        - path: ./migrations
+          action: rebuild
+    env_file:
+      - ./default.env
+      - ./local.env
+
   database:
     image: postgres:alpine
     container_name: database
