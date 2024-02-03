@@ -43,5 +43,5 @@ jobs:
         uses: docker/setup-buildx-action@v3
       -
         name: Run migrations
-        run: docker run --rm -v "./migrations:/workspace/migrations" -e "DATABASE_URL=${{ secrets.DATABASE_URL }}" ghcr.io/bridgetocockaigne/fowoo/migrations:latest sqlx migrate run
+        run: docker run --network="host" --rm -v "./migrations:/workspace/migrations" -e "DATABASE_URL=${{ secrets.DATABASE_URL }}" ghcr.io/bridgetocockaigne/fowoo/migrations:latest sqlx migrate run
 
