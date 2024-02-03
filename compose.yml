@@ -58,7 +58,7 @@ services:
       - ./local.env
 
   database:
-    image: postgres:alpine
+    build: ./docker/postgres
     container_name: database
     volumes:
       - database:/workspace/database/volume
