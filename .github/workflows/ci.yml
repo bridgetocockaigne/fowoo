@@ -35,3 +35,11 @@ jobs:
           file: ./docker/sqlx-cli/Dockerfile
           push: true
           tags: ghcr.io/${{ github.repository }}/migrations:latest
+      -
+        name: Build and push migrations
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./docker/rust/Dockerfile
+          push: true
+          tags: ghcr.io/${{ github.repository }}/rust:latest
