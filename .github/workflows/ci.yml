@@ -10,6 +10,9 @@ env:
 jobs:
   build_container_images:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
       -
         name: Checkout
@@ -31,4 +34,4 @@ jobs:
           context: .
           file: ./docker/sqlx-cli/Dockerfile
           push: true
-          tags: ghcr.io/bridgetocockaigne/fowoo/migrations:latest
+          tags: ghcr.io/${{ github.repository }}/migrations:latest
