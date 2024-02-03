@@ -13,6 +13,20 @@ jobs:
     permissions:
       contents: read
       packages: write
+    services:
+      database:
+        image: ghcr.io/bridgetocockaigne/fowoo/postgres:latest
+        env:
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD}}
+          POSTGRES_USER: ${{ env.POSTGRES_USER }}
+          POSTGRES_DB: ${{ env.POSTGRES_DB }}
+
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       -
         name: Checkout
@@ -27,3 +41,5 @@ jobs:
       -
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+
+
