@@ -46,4 +46,11 @@ jobs:
         run: docker run --network="${{ job.container.network }}" --rm -v "./migrations:/workspace/migrations" -e "DATABASE_URL=${{ secrets.DATABASE_URL }}" ghcr.io/bridgetocockaigne/fowoo/migrations:latest sqlx migrate run
       -
         name: Run tests
-        run: docker run --network="${{ job.container.network }}" --rm  -v "./src:/workspace/src" -v "./tests:/workspace/tests" -v "./templates:/workspace/templates" -v "./statics:/workspace/statics" -v "./Cargo.toml:/workspace/Cargo.toml" -v "./Cargo.lock:/workspace/Cargo.lock" -v "./queries:/workspace/queries" -e "DATABASE_URL=${{ secrets.DATABASE_URL }}" ghcr.io/bridgetocockaigne/fowoo/rust:latest cargo test
+        run: docker run --network="${{ job.container.network }}" --rm -v "./codecover:/workspace/codecover" -v "./src:/workspace/src" -v "./tests:/workspace/tests" -v "./templates:/workspace/templates" -v "./statics:/workspace/statics" -v "./Cargo.toml:/workspace/Cargo.toml" -v "./Cargo.lock:/workspace/Cargo.lock" -v "./queries:/workspace/queries" -e "DATABASE_URL=${{ secrets.DATABASE_URL }}" ghcr.io/bridgetocockaigne/fowoo/rust:latest llvm-cov --all-features --workspace --lcov --output-path /workspace/codecover/lcov.info
+      -
+        name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
+          files: /codecover/lcov.info
+          fail_ci_if_error: true
