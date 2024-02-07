@@ -9,9 +9,9 @@ pub trait Client {
     async fn user_info(&self, code: Code) -> Result<UserInfo, Error>;
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Default, Debug, Clone)]
 pub struct Code {
-    code: String,
+    pub code: String,
 }
 
 #[derive(Debug)]
@@ -26,13 +26,13 @@ pub enum Error {
 
 #[derive(Deserialize, Debug)]
 pub struct UserInfo {
-    email: String,
-    picture: String,
+    pub email: String,
+    pub picture: String,
 }
 
 #[derive(Deserialize, Debug)]
 pub struct Token {
-    access_token: String,
-    token_type: String,
-    scope: String,
+    pub access_token: String,
+    pub token_type: String,
+    pub scope: String,
 }
