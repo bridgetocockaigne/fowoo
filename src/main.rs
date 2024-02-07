@@ -1,12 +1,9 @@
 use std::env;
 
 use axum::{routing::get, Router};
-use controller::{auth, home, login};
-use infra::{auth::google::Client, state::State};
+use fowoo::controller::{auth, home, login};
+use fowoo::infra::{auth::google::Client, state::State};
 use tower_http::services::ServeDir;
-
-mod controller;
-mod infra;
 
 #[tokio::main]
 async fn main() {

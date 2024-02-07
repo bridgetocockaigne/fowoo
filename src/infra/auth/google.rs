@@ -1,14 +1,14 @@
 use std::env;
 
 #[derive(Clone)]
-pub(crate) struct Client {
-    pub(crate) client_id: String,
-    pub(crate) redirect_uri: String,
-    pub(crate) response_type: String,
-    pub(crate) scope: String,
-    pub(crate) access_type: String,
-    pub(crate) client_secret: String,
-    pub(crate) grant_type: String,
+pub struct Client {
+    pub client_id: String,
+    pub redirect_uri: String,
+    pub response_type: String,
+    pub scope: String,
+    pub access_type: String,
+    pub client_secret: String,
+    pub grant_type: String,
 }
 
 impl super::Client for Client {
