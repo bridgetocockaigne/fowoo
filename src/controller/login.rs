@@ -7,14 +7,14 @@ use tera::{Context, Tera};
 
 use crate::infra::auth::Client;
 
-pub(crate) async fn index(State(tera): State<Tera>) -> impl IntoResponse {
+pub async fn index(State(tera): State<Tera>) -> impl IntoResponse {
     let result = tera
         .render("login/index.html", &Context::default())
         .unwrap();
     Html(result)
 }
 
-pub(crate) async fn google(State(google_client): State<impl Client>) -> impl IntoResponse {
+pub async fn google(State(google_client): State<impl Client>) -> impl IntoResponse {
     let redirect_uri = google_client.redirect_uri();
 
     let mut headers = HeaderMap::new();

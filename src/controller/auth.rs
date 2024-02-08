@@ -6,7 +6,7 @@ use axum::{
 
 use crate::infra::auth::{Client, Code};
 
-pub(crate) async fn google(
+pub async fn google(
     State(google_client): State<impl Client>,
     Query(code): Query<Code>,
 ) -> impl IntoResponse {

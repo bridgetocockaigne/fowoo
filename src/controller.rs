@@ -1,3 +1,3 @@
-pub(crate) mod auth;
-pub(crate) mod home;
-pub(crate) mod login;
+pub mod auth;
+pub mod home;
+pub mod login;
