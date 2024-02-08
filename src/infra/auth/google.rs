@@ -1,7 +1,7 @@
 use std::env;
 
 #[derive(Clone)]
-pub(crate) struct Client {
+pub struct Client {
     pub(crate) client_id: String,
     pub(crate) redirect_uri: String,
     pub(crate) response_type: String,
@@ -48,6 +48,8 @@ impl super::Client for Client {
             ("grant_type", &self.grant_type),
             ("redirect_uri", &self.redirect_uri),
         ];
+
+        println!("{:#?}", params);
 
         let client = reqwest::Client::new();
         let token: super::Token = client

@@ -1,20 +1,23 @@
-pub(crate) mod google;
+pub mod google;
 
 use serde::Deserialize;
 
-pub(crate) trait Client {
+pub trait Client {
     fn default() -> Self;
     fn redirect_uri(&self) -> String;
-    async fn user_info(&self, code: Code) -> Result<UserInfo, Error>;
+    fn user_info(
+        &self,
+        code: Code,
+    ) -> impl std::future::Future<Output = Result<UserInfo, Error>> + Send;
 }
 
 #[derive(Deserialize, Debug)]
-pub(crate) struct Code {
+pub struct Code {
     code: String,
 }
 
 #[derive(Debug)]
-pub(crate) enum Error {
+pub enum Error {
     Generic(String),
     Token {
         error: String,
@@ -24,13 +27,13 @@ pub(crate) enum Error {
 }
 
 #[derive(Deserialize, Debug)]
-pub(crate) struct UserInfo {
+pub struct UserInfo {
     email: String,
     picture: String,
 }
 
 #[derive(Deserialize, Debug)]
-pub(crate) struct Token {
+pub struct Token {
     access_token: String,
     token_type: String,
     scope: String,

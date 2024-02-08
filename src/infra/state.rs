@@ -4,13 +4,13 @@ use tera::Tera;
 use super::auth::{google, Client};
 
 #[derive(Clone)]
-pub(crate) struct State {
+pub struct State {
     pub(crate) tera: Tera,
     pub(crate) google_client: google::Client,
 }
 
 impl State {
-    pub(crate) fn new(template_dir_path: &str) -> Self {
+    pub fn new(template_dir_path: &str) -> Self {
         let tera = Tera::new(template_dir_path).unwrap();
         let google_client = google::Client::default();
 
