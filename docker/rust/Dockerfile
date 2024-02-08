@@ -1,4 +1,4 @@
-FROM rust:1.76.0-alpine3.19
+FROM rust:1.76.0-alpine
 RUN apk add --no-cache musl-dev pkgconfig openssl-dev
 ENV RUSTFLAGS='-C target-feature=-crt-static'
 RUN cargo install cargo-watch
