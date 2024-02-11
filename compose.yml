@@ -49,10 +49,6 @@ services:
       - ./migrations:/workspace/migrations
     depends_on:
       - database
-    develop:
-      watch:
-        - path: ./migrations
-          action: rebuild
     env_file:
       - ./default.env
       - ./local.env
