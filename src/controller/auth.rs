@@ -1,16 +1,17 @@
-use axum::{
-    extract::Query,
-    extract::State,
-    response::{Html, IntoResponse},
-};
+use axum::{extract::Query, extract::State};
 
-use crate::infra::auth::{Client, Code};
+use crate::infra::{
+    auth::{Client, Code},
+    http::{Response, ResponseBuilder},
+};
 
 pub async fn google(
     State(google_client): State<impl Client>,
     Query(code): Query<Code>,
-) -> impl IntoResponse {
+) -> Response {
     let user_info = google_client.user_info(code).await.unwrap();
 
-    Html(format!("{:#?}", user_info))
+    ResponseBuilder::default()
+        .with_body(format!("{:#?}", user_info))
+        .build()
 }
