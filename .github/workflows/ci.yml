@@ -52,5 +52,5 @@ jobs:
         uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
-          files: /codecover/lcov.info,
+          files: /codecover/lcov.info, /codecover/junit.xml
           fail_ci_if_error: true
