@@ -5,13 +5,41 @@ use axum::{
     http::{HeaderMap, StatusCode},
 };
 use cucumber::{then, when, writer, World, WriterExt as _};
-use fowoo::{controller, infra::http::Response};
+use fowoo::{
+    controller,
+    infra::{
+        auth::{Client, Code, Error, UserInfo},
+        http::Response,
+    },
+};
 use tera::Tera;
 
 #[derive(World, Debug)]
 struct FowooWorld {
     tera: Tera,
     response: Response,
+    oauth_client: MockOauthClient,
+}
+
+#[derive(Debug, Clone)]
+struct MockOauthClient {
+    redirect_uri: String,
+}
+
+impl Client for MockOauthClient {
+    fn default() -> Self {
+        Self {
+            redirect_uri: String::default(),
+        }
+    }
+
+    fn redirect_uri(&self) -> String {
+        self.redirect_uri.clone()
+    }
+
+    async fn user_info(&self, _code: Code) -> Result<UserInfo, Error> {
+        todo!()
+    }
 }
 
 impl Default for FowooWorld {
@@ -20,8 +48,15 @@ impl Default for FowooWorld {
             .unwrap_or("/workspace/templates/**/*.html".to_string());
         let tera = Tera::new(&template_dir_path).unwrap();
         let response = (StatusCode::OK, HeaderMap::new(), "".to_string());
+        let oauth_client = MockOauthClient {
+            redirect_uri: "http://example.com/oauth/client".to_string(),
+        };
 
-        Self { tera, response }
+        Self {
+            tera,
+            response,
+            oauth_client,
+        }
     }
 }
 
@@ -33,6 +68,11 @@ async fn the_user_vists_the_homepage(world: &mut FowooWorld) {
 #[when(expr = "the user vists the login page")]
 async fn the_user_vists_the_login_page(world: &mut FowooWorld) {
     world.response = controller::login::index(State(world.tera.clone())).await;
+}
+
+#[when(expr = "the user visits the oauth provider page")]
+async fn the_user_vists_the_oauth_provider_page(world: &mut FowooWorld) {
+    world.response = controller::login::google(State(world.oauth_client.clone())).await;
 }
 
 #[then(expr = "the return status is {int}")]
