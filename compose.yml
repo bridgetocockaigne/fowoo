@@ -48,7 +48,9 @@ services:
     volumes:
       - ./migrations:/workspace/migrations
     depends_on:
-      - database
+      database:
+        condition: service_healthy
+
     env_file:
       - ./default.env
       - ./local.env
@@ -61,6 +63,12 @@ services:
     env_file:
       - ./default.env
       - ./local.env
+    healthcheck:
+      test: ["CMD-SHELL", "sh -c 'pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB'"]
+      interval: 3s
+      timeout: 2s
+      retries: 20
+      start_period: 3s
 
 volumes:
   build-cache:
