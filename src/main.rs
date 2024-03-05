@@ -7,10 +7,7 @@ use tower_http::services::ServeDir;
 
 #[tokio::main]
 async fn main() {
-    let template_dir_path =
-        env::var("FOWOO_TEMPLATE_DIR_PATH").unwrap_or("/workspace/templates/**/*.html".to_string());
-
-    let state = State::new(&template_dir_path);
+    let state = State::new();
 
     let statics_dir_path =
         env::var("FOWOO_STATICS_DIR_PATH").unwrap_or("/workspace/statics".to_string());

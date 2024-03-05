@@ -1,9 +1,6 @@
 use std::{env, fs};
 
-use axum::{
-    extract::State,
-    http::{HeaderMap, StatusCode},
-};
+use axum::{extract::State, http::StatusCode};
 use cucumber::{then, when, writer, World, WriterExt as _};
 use fowoo::{
     controller,
@@ -12,11 +9,9 @@ use fowoo::{
         http::Response,
     },
 };
-use tera::Tera;
 
 #[derive(World, Debug)]
 struct FowooWorld {
-    tera: Tera,
     response: Response,
     oauth_client: MockOauthClient,
 }
@@ -44,16 +39,12 @@ impl Client for MockOauthClient {
 
 impl Default for FowooWorld {
     fn default() -> Self {
-        let template_dir_path = env::var("FOWOO_TEMPLATE_DIR_PATH")
-            .unwrap_or("/workspace/templates/**/*.html".to_string());
-        let tera = Tera::new(&template_dir_path).unwrap();
-        let response = (StatusCode::OK, HeaderMap::new(), "".to_string());
+        let response = Response::default();
         let oauth_client = MockOauthClient {
             redirect_uri: "http://example.com/oauth/client".to_string(),
         };
 
         Self {
-            tera,
             response,
             oauth_client,
         }
@@ -62,12 +53,12 @@ impl Default for FowooWorld {
 
 #[when(expr = "the user visits the homepage")]
 async fn the_user_vists_the_homepage(world: &mut FowooWorld) {
-    world.response = controller::home::index(State(world.tera.clone())).await;
+    world.response = controller::home::index().await;
 }
 
 #[when(expr = "the user vists the login page")]
 async fn the_user_vists_the_login_page(world: &mut FowooWorld) {
-    world.response = controller::login::index(State(world.tera.clone())).await;
+    world.response = controller::login::index().await;
 }
 
 #[when(expr = "the user visits the oauth provider page")]
@@ -77,7 +68,12 @@ async fn the_user_vists_the_oauth_provider_page(world: &mut FowooWorld) {
 
 #[then(expr = "the return status is {int}")]
 async fn the_return_status_is(world: &mut FowooWorld, number: u16) {
-    assert_eq!(StatusCode::from_u16(number).unwrap(), world.response.0)
+    let status_code = match world.response {
+        Response::Body { status_code, .. } => status_code,
+        Response::Template { status_code, .. } => status_code,
+    };
+
+    assert_eq!(StatusCode::from_u16(number).unwrap(), status_code)
 }
 
 #[tokio::main]

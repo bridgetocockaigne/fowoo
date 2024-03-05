@@ -2,20 +2,15 @@ use axum::{
     extract::State,
     http::{header, StatusCode},
 };
-use tera::{Context, Tera};
 
 use crate::infra::{
     auth::Client,
     http::{content_type::TEXT_HTML, Response, ResponseBuilder},
 };
 
-pub async fn index(State(tera): State<Tera>) -> Response {
-    let result = tera
-        .render("login/index.html", &Context::default())
-        .unwrap();
-
+pub async fn index() -> Response {
     ResponseBuilder::default()
-        .with_body(result)
+        .with_template("login/index.html".to_string())
         .with_content_type(TEXT_HTML)
         .build()
 }
