@@ -744,6 +744,7 @@ version = "0.1.0"
 dependencies = [
  "axum",
  "cucumber",
+ "lazy_static",
  "reqwest",
  "serde",
  "serde_json",
